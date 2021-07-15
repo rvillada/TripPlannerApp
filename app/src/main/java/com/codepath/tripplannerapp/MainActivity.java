@@ -11,6 +11,7 @@ import com.parse.ParseUser;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogout;
+    private Button btnNewTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnLogout = findViewById(R.id.btnLogout);
+        btnNewTrip = findViewById(R.id.btnNewTrip);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnNewTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
 
     }
 
