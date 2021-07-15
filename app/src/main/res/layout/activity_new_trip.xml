@@ -14,24 +14,43 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
         android:hint="Destination" />
 
     <Button
         android:id="@+id/btnUploadTripImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etTripName"
-        android:layout_marginTop="20dp"
+        android:layout_above="@+id/btnNewTripSubmit"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="20dp"
         android:text="Upload Image" />
 
     <Button
         android:id="@+id/btnNewTripSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnUploadTripImage"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="5dp"
         android:text="Add Trip" />
+
+    <ImageView
+        android:id="@+id/ivTripImage"
+        android:layout_width="match_parent"
+        android:layout_height="275dp"
+        android:layout_below="@+id/etTripName"
+        android:layout_marginTop="15dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
 
 </RelativeLayout>
