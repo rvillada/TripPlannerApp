@@ -1,11 +1,13 @@
 package com.codepath.tripplannerapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +17,12 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 public class NewTripActivity extends AppCompatActivity {
 
@@ -26,6 +32,7 @@ public class NewTripActivity extends AppCompatActivity {
     private ImageView ivTripImage;
     private Button btnUploadTripImage;
     private Button btnNewTripSubmit;
+    private File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +47,18 @@ public class NewTripActivity extends AppCompatActivity {
         btnNewTripSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, "submit button was clicked");
                 String tripName = etTripName.getText().toString();
                 if (tripName.isEmpty()) {
                     Toast.makeText(NewTripActivity.this, "You must add a trip name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (photoFile == null || ivTripImage.getDrawable() == null) {
+                    Toast.makeText(NewTripActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                saveTrip(tripName, currentUser);
+                saveTrip(tripName, currentUser, photoFile);
             }
         });
 
@@ -55,8 +67,6 @@ public class NewTripActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
-
-
             }
         });
 
@@ -67,15 +77,22 @@ public class NewTripActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
+            photoFile = new File(selectedImage.getPath());
             ivTripImage.setImageURI(selectedImage);
-
         }
     }
 
-    private void saveTrip(String tripName, ParseUser currentUser) {
+    private void saveTrip(String tripName, ParseUser currentUser, File photoFile) {
+        Log.i(TAG, "we are in save trip");
         Trip trip = new Trip();
         trip.setTripName(tripName);
-        //trip.setTripImage();
+        Drawable drawable = ivTripImage.getDrawable();
+        Bitmap myLogo = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream myLogoStream = new ByteArrayOutputStream();
+        myLogo.compress(Bitmap.CompressFormat.PNG, 100, myLogoStream);
+        byte[] myLogoByteArray = myLogoStream.toByteArray();
+        myLogo.recycle();
+        trip.setTripImage(new ParseFile(myLogoByteArray));
         trip.setUser(currentUser);
         trip.saveInBackground(new SaveCallback() {
             @Override
@@ -86,6 +103,7 @@ public class NewTripActivity extends AppCompatActivity {
                 }
                 Log.i(TAG, "Post save was successful");
                 etTripName.setText("");
+                ivTripImage.setImageResource(0);
             }
         });
     }
