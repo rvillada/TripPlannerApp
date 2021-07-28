@@ -94,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "Trip: " + trip.getTripName());
                 }
 
+                allTrips.clear();
+                adapter.clear();
+
                 allTrips.addAll(trips);
                 adapter.notifyDataSetChanged();
             }

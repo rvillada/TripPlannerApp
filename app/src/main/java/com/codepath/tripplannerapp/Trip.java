@@ -5,12 +5,17 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
+@Parcel(analyze = Trip.class)
 @ParseClassName("Trip")
 public class Trip extends ParseObject {
 
     public static final String KEY_TRIP_NAME = "tripName";
     public static final String KEY_TRIP_IMAGE = "tripImage";
     public static final String KEY_USER = "user";
+
+    public Trip() {}
 
     public String getTripName() {
         return getString(KEY_TRIP_NAME);

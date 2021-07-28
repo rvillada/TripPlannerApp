@@ -1,6 +1,7 @@
 package com.codepath.tripplannerapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -37,7 +40,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull  TripAdapter.ViewHolder holder, int position) {
         Trip trip = trips.get(position);
         holder.bind(trip);
-
     }
 
     @Override
@@ -45,7 +47,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
         return trips.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivTripImageList;
         private TextView tvTripNameList;
@@ -64,7 +66,24 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
             if (image != null) {
                 Glide.with(context).load(image.getUrl()).into(ivTripImageList);
             }
+
+            // THIS IS THE CODE THAT IS LISTENING FOR CLICKS
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, TripDetailsActivity.class);
+                    intent.putExtra("trip", Parcels.wrap(trip));
+                    context.startActivity(intent);
+                }
+            });
+
         }
+
+     }
+
+    public void clear() {
+        trips.clear();
+        notifyDataSetChanged();
     }
 
 }
