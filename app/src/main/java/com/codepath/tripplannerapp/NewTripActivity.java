@@ -31,6 +31,7 @@ public class NewTripActivity extends AppCompatActivity {
     private ImageView ivTripImage;
     private Button btnUploadTripImage;
     private Button btnNewTripSubmit;
+    private Button btnHome;
     private File photoFile;
 
     @Override
@@ -42,6 +43,7 @@ public class NewTripActivity extends AppCompatActivity {
         ivTripImage = findViewById(R.id.ivTripImage);
         btnUploadTripImage = findViewById(R.id.btnUploadTripImage);
         btnNewTripSubmit = findViewById(R.id.btnNewTripSubmit);
+        btnHome = findViewById(R.id.btnHome);
 
         btnNewTripSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,11 +55,14 @@ public class NewTripActivity extends AppCompatActivity {
                     return;
                 }
                 if (photoFile == null || ivTripImage.getDrawable() == null) {
-                    Toast.makeText(NewTripActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewTripActivity.this, "You must add a trip image", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 saveTrip(tripName, currentUser, photoFile);
+                //Intent i = new Intent(NewTripActivity.this, MainActivity.class);
+                //startActivity(i);
+                //finish();
             }
         });
 
@@ -66,6 +71,15 @@ public class NewTripActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
+            }
+        });
+
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(NewTripActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -82,15 +96,17 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     private void saveTrip(String tripName, ParseUser currentUser, File photoFile) {
-        Log.i(TAG, "we are in save trip");
         Trip trip = new Trip();
         trip.setTripName(tripName);
+
+        // setting up trip image
         Drawable drawable = ivTripImage.getDrawable();
         Bitmap myLogo = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream myLogoStream = new ByteArrayOutputStream();
         myLogo.compress(Bitmap.CompressFormat.PNG, 100, myLogoStream);
         byte[] myLogoByteArray = myLogoStream.toByteArray();
         myLogo.recycle();
+
         trip.setTripImage(new ParseFile(myLogoByteArray));
         trip.setUser(currentUser);
         trip.saveInBackground(new SaveCallback() {

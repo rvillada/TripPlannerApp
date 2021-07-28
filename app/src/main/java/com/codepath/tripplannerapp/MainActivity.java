@@ -2,6 +2,9 @@ package com.codepath.tripplannerapp;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +16,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private Button btnLogout;
     private Button btnNewTrip;
+    private RecyclerView rvTrips;
+
+    protected TripAdapter adapter;
+    protected List<Trip> allTrips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
         btnLogout = findViewById(R.id.btnLogout);
         btnNewTrip = findViewById(R.id.btnNewTrip);
+        rvTrips = findViewById(R.id.rvTrips);
+
+
+        allTrips = new ArrayList<>();
+        adapter = new TripAdapter(this, allTrips);
+
+        //rvTrips.setHasFixedSize(true);
+        rvTrips.setAdapter(adapter);
+        rvTrips.setLayoutManager(new LinearLayoutManager(this));
+        queryTrips();
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,13 +68,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //queryTrips();
+
     }
 
     private void queryTrips() {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
 
-        //query.include(Trip.KEY_USER);
+        query.include(Trip.KEY_USER);
+
+        query.setLimit(20);
+
+        query.addDescendingOrder("createdAt");
 
         //getInBackground is used to retrieve a single item for the backend
         //find in background gets them all
@@ -71,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
                 for (Trip trip : trips) {
                     Log.i(TAG, "Trip: " + trip.getTripName());
                 }
+
+                allTrips.addAll(trips);
+                adapter.notifyDataSetChanged();
             }
         });
     }
