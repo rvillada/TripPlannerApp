@@ -6,12 +6,12 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="home"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_map"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_map_24"
         android:title="map"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

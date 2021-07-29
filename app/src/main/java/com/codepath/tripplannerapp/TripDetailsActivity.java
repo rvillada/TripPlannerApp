@@ -2,11 +2,13 @@ package com.codepath.tripplannerapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,16 +19,16 @@ public class TripDetailsActivity extends AppCompatActivity {
     Trip trip;
 
     // the view objects
-    TextView tvTripNameDetails;
-    BottomNavigationView bottomNavigationView;
+    private TextView tvTripNameDetails;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
 
-        tvTripNameDetails = (TextView) findViewById(R.id.tvTripNameDetails);
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        tvTripNameDetails = findViewById(R.id.tvTripNameDetails);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         trip = (Trip) Parcels.unwrap(getIntent().getParcelableExtra("trip"));
 
@@ -37,15 +39,18 @@ public class TripDetailsActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_itinerary:
-                        // do something here
-                        return true;
+                        Toast.makeText(TripDetailsActivity.this, "Itinerary!", Toast.LENGTH_SHORT).show();
+                        break;
                     case R.id.action_map:
-                        // do something here
-                        return true;
-                    default: return true;
+                        Toast.makeText(TripDetailsActivity.this, "Map!", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
                 }
+                return true;
             }
 
         });

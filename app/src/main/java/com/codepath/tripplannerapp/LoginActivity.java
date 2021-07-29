@@ -64,6 +64,9 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with login", e);
+                    e.printStackTrace();
+                    e.getCause();
+                    Log.e(TAG, e.getMessage(), e);
                     return;
                 }
                 goMainActivity();
