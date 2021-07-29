@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogout;
     private Button btnNewTrip;
     private RecyclerView rvTrips;
-    private Button btnMap;
 
     protected TripAdapter adapter;
     protected List<Trip> allTrips;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
         btnNewTrip = findViewById(R.id.btnNewTrip);
         rvTrips = findViewById(R.id.rvTrips);
-        btnMap = findViewById(R.id.btnMap);
 
 
         allTrips = new ArrayList<>();
@@ -69,17 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        btnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, MapsActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
-
     }
 
     private void queryTrips() {
