@@ -67,7 +67,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
                 Glide.with(context).load(image.getUrl()).into(ivTripImageList);
             }
 
-            // THIS IS THE CODE THAT IS LISTENING FOR CLICKS
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

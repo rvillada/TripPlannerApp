@@ -33,6 +33,8 @@ android {
 
 ext {
     googlePlayVersion = "17.0.0"
+    appCompatVersion = '1.0.0'
+    designSupportVersion = '1.0.0'
 }
 
 dependencies {
@@ -55,4 +57,10 @@ dependencies {
 
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
+
+    implementation "com.google.android.gms:play-services-maps:$googlePlayVersion"
+    implementation "com.google.android.gms:play-services-location:$googlePlayVersion"
+
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
+    implementation "com.google.android.material:material:${designSupportVersion}"
 }

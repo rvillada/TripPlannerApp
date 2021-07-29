@@ -14,6 +14,8 @@ public class Trip extends ParseObject {
     public static final String KEY_TRIP_NAME = "tripName";
     public static final String KEY_TRIP_IMAGE = "tripImage";
     public static final String KEY_USER = "user";
+    public static final String KEY_TRIP_START = "tripStart";
+    public static final String KEY_TRIP_END = "tripEnd";
 
     public Trip() {}
 
@@ -40,4 +42,8 @@ public class Trip extends ParseObject {
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
     }
+
+    public void setTripStart(String tripStart) { put(KEY_TRIP_START, tripStart); }
+
+    public void setTripEnd(String tripEnd) { put (KEY_TRIP_END, tripEnd); }
 }

@@ -15,9 +15,9 @@
         android:layout_below="@+id/btnHome"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="-1dp"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="1dp"
         android:hint="Destination" />
 
     <Button
@@ -47,20 +47,74 @@
     <ImageView
         android:id="@+id/ivTripImage"
         android:layout_width="match_parent"
-        android:layout_height="275dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/etTripName"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="5dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="13dp"
-        android:text="Home" />
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="2dp"
+        app:srcCompat="@drawable/ic_black_home" />
+
+    <TextView
+        android:id="@+id/tvTripStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivTripImage"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="30dp"
+        android:text="Starts:"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvTripEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTripStart"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="35dp"
+        android:text="Ends:"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnStartDate"
+        style="?android:spinnerStyle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivTripImage"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="13dp"
+        android:layout_toEndOf="@+id/tvTripStart"
+        android:text="JAN 01 2020"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:onClick="openDatePickerStart"/>
+
+    <Button
+        android:id="@+id/btnEndDate"
+        style="?android:spinnerStyle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnStartDate"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/tvTripEnd"
+        android:text="JAN 01 2020"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:onClick="openDatePickerEnd"/>
 
 
 </RelativeLayout>
