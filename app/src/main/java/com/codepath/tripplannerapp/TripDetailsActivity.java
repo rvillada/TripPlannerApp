@@ -23,9 +23,6 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     Trip trip;
 
-    // the view objects
-    //private TextView tvTripNameDetails;
-
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
 
@@ -34,12 +31,10 @@ public class TripDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
 
-        //tvTripNameDetails = findViewById(R.id.tvTripNameDetails);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         trip = (Trip) Parcels.unwrap(getIntent().getParcelableExtra("trip"));
 
-        //tvTripNameDetails.setText(trip.getTripName());
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

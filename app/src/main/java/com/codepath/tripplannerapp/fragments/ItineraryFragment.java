@@ -45,8 +45,5 @@ public class ItineraryFragment extends Fragment {
             tvTripNameDetails.setText(trip.getTripName());
         }
 
-        //trip = (Trip) Parcels.unwrap(.getParcelableExtra("trip"));
-
-        //tvTripNameDetails.setText(trip.getTripName());
     }
 }

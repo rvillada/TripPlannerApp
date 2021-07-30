@@ -1,5 +1,6 @@
 package com.codepath.tripplannerapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
@@ -73,6 +74,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
                     Intent intent = new Intent(context, TripDetailsActivity.class);
                     intent.putExtra("trip", Parcels.wrap(trip));
                     context.startActivity(intent);
+                    ((Activity) itemView.getContext()).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
 
