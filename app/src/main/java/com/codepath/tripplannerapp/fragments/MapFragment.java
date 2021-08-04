@@ -1,5 +1,6 @@
 package com.codepath.tripplannerapp.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,7 +14,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -166,6 +169,8 @@ public class MapFragment extends Fragment {
                 return false;
             }
         });
+
+        hideKeyboard();
     }
 
     private void geoLocate(String searchString, Boolean pinBool) {
@@ -208,6 +213,7 @@ public class MapFragment extends Fragment {
                     .title(title);
         }
         myMap.addMarker(options);
+        hideKeyboard();
     }
 
     private void makeMatrix(List<Address> itineraryAddresses) {
@@ -246,6 +252,11 @@ public class MapFragment extends Fragment {
 
 
 
+    }
+
+    private void hideKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
 }

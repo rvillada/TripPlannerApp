@@ -35,7 +35,7 @@ public class ItineraryFragment extends Fragment {
     public static final String TAG = "ItineraryFragment";
 
     private TextView tvTripNameDetails;
-    private Button btnNewTask;
+    //private Button btnNewTask;
 
 
     //protected TaskAdapter adapter;
@@ -58,7 +58,7 @@ public class ItineraryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         tvTripNameDetails = view.findViewById(R.id.tvTripNameDetails);
-        btnNewTask = view.findViewById(R.id.btnNewTask);
+        //btnNewTask = view.findViewById(R.id.btnNewTask);
 
         Bundle bundleItinerary = this.getArguments();
         if (bundleItinerary != null) {
@@ -68,13 +68,13 @@ public class ItineraryFragment extends Fragment {
 
 
 
-        btnNewTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), NewTaskActivity.class);
-                startActivity(i);
-            }
-        });
+//        btnNewTask.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getActivity(), NewTaskActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
     }
 
