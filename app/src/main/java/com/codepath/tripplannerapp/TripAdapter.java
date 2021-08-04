@@ -52,16 +52,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
 
         private ImageView ivTripImageList;
         private TextView tvTripNameList;
+        private TextView tvTripDates;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivTripImageList = itemView.findViewById(R.id.ivTripImageList);
             tvTripNameList = itemView.findViewById(R.id.tvTripNameList);
+            tvTripDates = itemView.findViewById(R.id.tvTripDates);
         }
 
         public void bind(Trip trip) {
             // Bind the post data to the view elements
             tvTripNameList.setText(trip.getTripName());
+            //tvTripDates.setText(trip.getTripStart());
             Log.i("TripAdapter", trip.getTripName());
             ParseFile image = trip.getTripImage();
             if (image != null) {

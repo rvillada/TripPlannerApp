@@ -27,6 +27,9 @@ import com.parse.SaveCallback;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
+
+// TODO: leave default val
 
 public class NewTripActivity extends AppCompatActivity {
 
@@ -39,11 +42,14 @@ public class NewTripActivity extends AppCompatActivity {
     private ImageButton btnHome;
     private File photoFile;
 
+
     private DatePickerDialog datePickerDialogStart;
     private DatePickerDialog datePickerDialogEnd;
 
     private Button btnStartDate;
     private Button btnEndDate;
+    private Date startDate;
+    private Date endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +83,7 @@ public class NewTripActivity extends AppCompatActivity {
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                saveTrip(tripName, currentUser, photoFile, btnStartDate.getText().toString(), btnEndDate.getText().toString());
+                saveTrip(tripName, currentUser, photoFile, startDate, endDate);
             }
         });
 
@@ -114,6 +120,7 @@ public class NewTripActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener dateSetListenerStart = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                startDate = new Date(year - 1900, month, dayOfMonth);
                 month = month + 1;
                 String date = makeDateString(dayOfMonth, month, year);
                 btnStartDate.setText(date);
@@ -123,6 +130,7 @@ public class NewTripActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener dateSetListenerEnd = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                endDate = new Date(year - 1900, month, dayOfMonth);
                 month = month + 1;
                 String date = makeDateString(dayOfMonth, month, year);
                 btnEndDate.setText(date);
@@ -205,11 +213,11 @@ public class NewTripActivity extends AppCompatActivity {
         }
     }
 
-    private void saveTrip(String tripName, ParseUser currentUser, File photoFile, String tripStart, String tripEnd) {
+    private void saveTrip(String tripName, ParseUser currentUser, File photoFile, Date startDate, Date endDate) {
         Trip trip = new Trip();
         trip.setTripName(tripName);
-        trip.setTripStart(tripStart);
-        trip.setTripEnd(tripEnd);
+        trip.setTripStart(startDate);
+        trip.setTripEnd(endDate);
 
 
         // compresses image into manageable size

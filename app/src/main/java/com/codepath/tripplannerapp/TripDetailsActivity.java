@@ -35,14 +35,13 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         trip = (Trip) Parcels.unwrap(getIntent().getParcelableExtra("trip"));
 
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_itinerary:
-                        Toast.makeText(TripDetailsActivity.this, "Itinerary!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(TripDetailsActivity.this, "Itinerary!", Toast.LENGTH_SHORT).show();
 
                         fragment = new ItineraryFragment();
                         Bundle bundle = new Bundle();
@@ -51,7 +50,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                         break;
                     case R.id.action_map:
                     default:
-                        Toast.makeText(TripDetailsActivity.this, "Map!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(TripDetailsActivity.this, "Map!", Toast.LENGTH_SHORT).show();
                         fragment = new MapFragment();
                         break;
                 }

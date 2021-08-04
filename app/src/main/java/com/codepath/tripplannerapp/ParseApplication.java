@@ -13,6 +13,7 @@ public class ParseApplication extends Application {
 
         // Register our parse models
         ParseObject.registerSubclass(Trip.class);
+        ParseObject.registerSubclass(Task.class);
 
 //        Parse.initialize(new Parse.Configuration.Builder(this)
 //                .applicationId("o5uxHoawTSTOGQWsUApBQUdv5WqQfSsLNAlWzdyR")

@@ -7,6 +7,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 @Parcel(analyze = Trip.class)
 @ParseClassName("Trip")
 public class Trip extends ParseObject {
@@ -43,7 +45,11 @@ public class Trip extends ParseObject {
         put(KEY_USER, user);
     }
 
-    public void setTripStart(String tripStart) { put(KEY_TRIP_START, tripStart); }
+    public void setTripStart(Date tripStart) { put(KEY_TRIP_START, tripStart); }
 
-    public void setTripEnd(String tripEnd) { put (KEY_TRIP_END, tripEnd); }
+    public Date getTripStart() {return getDate(KEY_TRIP_START);}
+
+    public void setTripEnd(Date tripEnd) { put (KEY_TRIP_END, tripEnd); }
+
+    public Date getTripEnd() { return getDate(KEY_TRIP_END); }
 }
