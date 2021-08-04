@@ -61,7 +61,7 @@ public class TripDetailsActivity extends AppCompatActivity {
             }
 
         });
-        bottomNavigationView.setSelectedItemId(R.id.action_itinerary);
+        bottomNavigationView.setSelectedItemId(R.id.action_map);
 
     }
 }
