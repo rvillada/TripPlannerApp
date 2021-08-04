@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,7 +104,16 @@ public class MapFragment extends Fragment {
                 btnMakeItinerary.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//
+//                        Intent i = new Intent(getActivity(), ItineraryFragment.);
+//                        startActivity(i);
+//                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//                        fragmentTransaction.replace(R.id.flContainer, new ItineraryFragment(), "NewFragment TAG");
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
+                        //makeMatrix(itineraryAddresses);
+
+                        Log.i(TAG, String.valueOf(itineraryAddresses));
+                        makeMatrix(itineraryAddresses);
 
 
                     }
@@ -199,6 +209,45 @@ public class MapFragment extends Fragment {
         }
         myMap.addMarker(options);
     }
+
+    private void makeMatrix(List<Address> itineraryAddresses) {
+        // probably did not need to pass in itineraryAddresses as a parameter since I defined it globally
+        int matrixDim = itineraryAddresses.size();
+        Log.i(TAG, String.valueOf(itineraryAddresses.size()));
+
+        double[][] distancesArray = new double[matrixDim][matrixDim];
+
+        for (int i = 0; i < itineraryAddresses.size(); i++) {
+            for (int j = 0; j < itineraryAddresses.size(); j++) {
+                if (i == j) {
+                    distancesArray[i][j] = 0;
+                    Log.i(TAG, String.valueOf(distancesArray[i][j]));
+                } else {
+                    Address address1 = itineraryAddresses.get(i);
+                    Address address2 = itineraryAddresses.get(j);
+
+//                    Log.i(TAG, address1.getAddressLine(0));
+//                    Log.i(TAG, address2.getAddressLine(0));
+
+                    LatLng latLng1 = new LatLng(address1.getLatitude(), address1.getLongitude());
+                    LatLng latLng2 = new LatLng(address2.getLatitude(), address2.getLongitude());
+
+                    double distance = SphericalUtil.computeDistanceBetween(latLng1, latLng2);
+
+
+                    distancesArray[i][j] = distance;
+                    Log.i(TAG, String.valueOf(distancesArray[i][j]));
+
+
+                }
+            }
+        }
+        Log.i(TAG, String.valueOf(distancesArray));
+
+
+
+    }
+
 }
 
 
