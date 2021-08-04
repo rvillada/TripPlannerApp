@@ -60,9 +60,9 @@ public class ItineraryFragment extends Fragment {
         tvTripNameDetails = view.findViewById(R.id.tvTripNameDetails);
         btnNewTask = view.findViewById(R.id.btnNewTask);
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            Trip trip = bundle.getParcelable("trip");
+        Bundle bundleItinerary = this.getArguments();
+        if (bundleItinerary != null) {
+            Trip trip = bundleItinerary.getParcelable("trip");
             tvTripNameDetails.setText(trip.getTripName());
         }
 

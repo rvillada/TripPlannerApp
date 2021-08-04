@@ -42,16 +42,18 @@ public class TripDetailsActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_itinerary:
                         //Toast.makeText(TripDetailsActivity.this, "Itinerary!", Toast.LENGTH_SHORT).show();
-
                         fragment = new ItineraryFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("trip", trip);
-                        fragment.setArguments(bundle);
+                        Bundle bundleItinerary = new Bundle();
+                        bundleItinerary.putParcelable("trip", trip);
+                        fragment.setArguments(bundleItinerary);
                         break;
                     case R.id.action_map:
                     default:
                         //Toast.makeText(TripDetailsActivity.this, "Map!", Toast.LENGTH_SHORT).show();
                         fragment = new MapFragment();
+                        Bundle bundleMap = new Bundle();
+                        bundleMap.putParcelable("trip", trip);
+                        fragment.setArguments(bundleMap);
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

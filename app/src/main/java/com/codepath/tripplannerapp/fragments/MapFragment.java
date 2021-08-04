@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.tripplannerapp.R;
+import com.codepath.tripplannerapp.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +43,7 @@ public class MapFragment extends Fragment {
     private static final float DEFAULT_ZOOM = 15f;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,9 +54,7 @@ public class MapFragment extends Fragment {
         SupportMapFragment supportMapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.google_map);
 
-        // adding in searching capabilities
 
-        etInputSearch = getActivity().findViewById(R.id.etInputSearch);
 
 
         // Async map
@@ -64,6 +64,17 @@ public class MapFragment extends Fragment {
                 // i added this
                 myMap = googleMap;
                 // When map is loaded
+
+                Bundle bundleMap = MapFragment.this.getArguments();
+                if (bundleMap != null) {
+                    Trip trip = bundleMap.getParcelable("trip");
+                    Log.i(TAG, "Hey im here " + trip.getTripName());
+                    geoLocate(trip.getTripName());
+                }
+
+
+
+
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
@@ -83,13 +94,13 @@ public class MapFragment extends Fragment {
                         // Add marker on map
                         googleMap.addMarker(markerOptions);
 
+                        etInputSearch = getActivity().findViewById(R.id.etInputSearch);
+
                         init();
                     }
                 });
             }
         });
-
-
 
         //why cant init go here?
         return view;
@@ -97,7 +108,7 @@ public class MapFragment extends Fragment {
 
     private void init() {
 
-        Log.d(TAG, "init: initializing ");
+        Log.d(TAG, "init: initializing " + etInputSearch);
         etInputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -106,16 +117,16 @@ public class MapFragment extends Fragment {
                 || event.getAction() == event.ACTION_DOWN
                 || event.getAction() == event.KEYCODE_ENTER) {
 
+                    String searchString = etInputSearch.getText().toString();
                     // execute our method for searching
-                    geoLocate();
+                    geoLocate(searchString);
                 }
                 return false;
             }
         });
     }
 
-    private void geoLocate() {
-        String searchString = etInputSearch.getText().toString();
+    private void geoLocate(String searchString) {
         // i should be passing in a context here... vid passed in MapActivity.this
         Geocoder geocoder = new Geocoder(getActivity());
         List<Address> list = new ArrayList<>();
