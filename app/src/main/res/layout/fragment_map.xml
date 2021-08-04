@@ -45,5 +45,27 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/btnAddItinerary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="90dp"
+        android:backgroundTint="#F0EAF1"
+        android:text="add" />
+
+    <Button
+        android:id="@+id/btnMakeItinerary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="86dp"
+        android:backgroundTint="#EDE9ED"
+        android:text="make itinerary" />
+
 
 </RelativeLayout>
