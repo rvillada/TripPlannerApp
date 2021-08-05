@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         allTrips = new ArrayList<>();
         adapter = new TripAdapter(this, allTrips);
 
-        //rvTrips.setHasFixedSize(true);
         rvTrips.setAdapter(adapter);
         rvTrips.setLayoutManager(new LinearLayoutManager(this));
         queryTrips();
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                ParseUser currentUser = ParseUser.getCurrentUser();
 
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);

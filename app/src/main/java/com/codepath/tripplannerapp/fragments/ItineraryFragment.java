@@ -1,6 +1,7 @@
 package com.codepath.tripplannerapp.fragments;
 
 import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ public class ItineraryFragment extends Fragment {
     public static final String TAG = "ItineraryFragment";
 
     private TextView tvTripNameDetails;
-    //private Button btnNewTask;
+    private TextView tvItinerary;
 
 
     //protected TaskAdapter adapter;
@@ -58,23 +59,16 @@ public class ItineraryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         tvTripNameDetails = view.findViewById(R.id.tvTripNameDetails);
-        //btnNewTask = view.findViewById(R.id.btnNewTask);
+        tvItinerary = view.findViewById(R.id.tvItinerary);
 
         Bundle bundleItinerary = this.getArguments();
         if (bundleItinerary != null) {
             Trip trip = bundleItinerary.getParcelable("trip");
+            Log.i(TAG, trip.getTripName());
             tvTripNameDetails.setText(trip.getTripName());
+
         }
 
-
-
-//        btnNewTask.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), NewTaskActivity.class);
-//                startActivity(i);
-//            }
-//        });
 
     }
 
@@ -86,9 +80,6 @@ public class ItineraryFragment extends Fragment {
         query.setLimit(20);
 
         query.addDescendingOrder("createdAt");
-
-        //getInBackground is used to retrieve a single item for the backend
-        //find in background gets them all
 
         query.findInBackground(new FindCallback<Task>() {
             @Override
@@ -102,10 +93,8 @@ public class ItineraryFragment extends Fragment {
                 }
 
                 allTasks.clear();
-                //adapter.clear();
 
                 allTasks.addAll(tasks);
-                //adapter.notifyDataSetChanged();
             }
         });
     }

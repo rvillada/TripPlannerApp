@@ -64,7 +64,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>{
         public void bind(Trip trip) {
             // Bind the post data to the view elements
             tvTripNameList.setText(trip.getTripName());
-            //tvTripDates.setText(trip.getTripStart());
             Log.i("TripAdapter", trip.getTripName());
             ParseFile image = trip.getTripImage();
             if (image != null) {

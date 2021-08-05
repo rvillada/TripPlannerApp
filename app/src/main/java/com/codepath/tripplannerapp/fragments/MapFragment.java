@@ -1,20 +1,17 @@
 package com.codepath.tripplannerapp.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,19 +19,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codepath.tripplannerapp.LoginActivity;
-import com.codepath.tripplannerapp.MainActivity;
-import com.codepath.tripplannerapp.Node;
 import com.codepath.tripplannerapp.R;
 import com.codepath.tripplannerapp.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
@@ -125,6 +117,24 @@ public class MapFragment extends Fragment {
                         List<Integer> answer = smallestDistance(allLocationOrderings, distancesArray);
                         Log.i(TAG, "Shortest path list: " + String.valueOf(answer));
 
+                        List<Address> shortestPathAddresses = new ArrayList<>();
+
+
+                        for (int i = 0; i < itineraryAddresses.size(); i++) {
+                            int indexInItineraryAddresses = answer.get(i);
+                            Log.i(TAG, "answer.get i: " + String.valueOf(answer.get(i)));
+                            shortestPathAddresses.add(itineraryAddresses.get(indexInItineraryAddresses));
+                        }
+
+                        // Building up Toast message
+                        String string = "Here is your itinerary! \n";
+                        for (int i = 0; i < shortestPathAddresses.size(); i++) {
+                            Address address = shortestPathAddresses.get(i);
+                            String addressName = address.getAddressLine(0);
+
+                            string = string + String.valueOf(i+1) + ". " + addressName + " \n";
+                        }
+                        Toast.makeText(getContext(), string, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -239,6 +249,8 @@ public class MapFragment extends Fragment {
         return totalPathDistance;
     }
 
+    // Returns a matrix that has distances between all locations in our intinerary. A value at location [i][j] in the matrix would represent the distance going from the i-th index location in our itinerary array to the j-th location in our itinerary array.
+    // the itineraryAddresses list is in the order that the user adds it in the UI
     private double[][] makeMatrix(List<Address> itineraryAddresses) {
         int matrixDim = itineraryAddresses.size();
 
@@ -266,17 +278,18 @@ public class MapFragment extends Fragment {
     }
 
 
-    private void permuteInts(List<Integer> nums, int index, List<List<Integer>> bigList) {
+    // recursive function that takes in a list of numbers, and populates a larger list with all the possible permutations
+    private void permuteInts(List<Integer> nums, int index, List<List<Integer>> allPermutations) {
         if (index == nums.size()) {
             List l = new ArrayList(nums.size());
             for (int num : nums)
                 l.add(num);
-            bigList.add(l);
+            allPermutations.add(l);
             return;
         }
         for (int i = index; i < nums.size(); i++) {
             swap(nums, i, index);
-            permuteInts(nums, index + 1, bigList);
+            permuteInts(nums, index + 1, allPermutations);
             swap(nums, i, index);
         }
     }

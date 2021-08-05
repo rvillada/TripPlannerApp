@@ -29,7 +29,6 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
-// TODO: leave default val
 
 public class NewTripActivity extends AppCompatActivity {
 

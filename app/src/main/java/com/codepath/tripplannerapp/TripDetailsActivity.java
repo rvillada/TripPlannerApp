@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -17,6 +20,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.parceler.Parcels;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public class TripDetailsActivity extends AppCompatActivity {
@@ -41,7 +46,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_itinerary:
-                        //Toast.makeText(TripDetailsActivity.this, "Itinerary!", Toast.LENGTH_SHORT).show();
                         fragment = new ItineraryFragment();
                         Bundle bundleItinerary = new Bundle();
                         bundleItinerary.putParcelable("trip", trip);
@@ -49,7 +53,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                         break;
                     case R.id.action_map:
                     default:
-                        //Toast.makeText(TripDetailsActivity.this, "Map!", Toast.LENGTH_SHORT).show();
                         fragment = new MapFragment();
                         Bundle bundleMap = new Bundle();
                         bundleMap.putParcelable("trip", trip);
