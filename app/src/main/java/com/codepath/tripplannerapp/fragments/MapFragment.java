@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.codepath.tripplannerapp.LoginActivity;
 import com.codepath.tripplannerapp.MainActivity;
+import com.codepath.tripplannerapp.Node;
 import com.codepath.tripplannerapp.R;
 import com.codepath.tripplannerapp.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -74,6 +75,8 @@ public class MapFragment extends Fragment {
 
 
 
+
+
         // Async map
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -118,6 +121,13 @@ public class MapFragment extends Fragment {
                         Log.i(TAG, String.valueOf(itineraryAddresses));
                         makeMatrix(itineraryAddresses);
 
+                        List<List<Address>> finalList = new ArrayList<>();
+
+                        permute(itineraryAddresses, finalList, 0, itineraryAddresses.size()-1);
+
+                        Log.i(TAG, String.valueOf(finalList));
+                        Log.i(TAG, String.valueOf(finalList.size()));
+
 
                     }
                 });
@@ -158,13 +168,15 @@ public class MapFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
-                || actionId == EditorInfo.IME_ACTION_DONE
-                || event.getAction() == event.ACTION_DOWN
-                || event.getAction() == event.KEYCODE_ENTER) {
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || event.getAction() == event.ACTION_DOWN
+                        || event.getAction() == event.KEYCODE_ENTER) {
 
                     String searchString = etInputSearch.getText().toString();
                     // execute our method for searching
                     geoLocate(searchString, true);
+
+                    etInputSearch.getText().clear();
                 }
                 return false;
             }
@@ -248,10 +260,6 @@ public class MapFragment extends Fragment {
                 }
             }
         }
-        Log.i(TAG, String.valueOf(distancesArray));
-
-
-
     }
 
     private void hideKeyboard() {
@@ -259,8 +267,62 @@ public class MapFragment extends Fragment {
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
+
+
+
+//    private void travellingSalesman(List<Address> itineraryAddresses, double[][] distancesArray) {
+//        Node root = new Node(itineraryAddresses.get(0));
+//        int index = 0;
+//        Node workingNode = root;
+//
+//        for (int i = 1; i < itineraryAddresses.size(); i++) {
+//            if (i > index) {
+//                workingNode.addChild(new Node(itineraryAddresses.get(i)));
+//            }
+//
+//
+//        }
+//
+//
+//    }
+
+
+    private void permute(List<Address> itineraryAddresses, List<List<Address>> finalList, int l, int r)
+    {
+
+        if (l == r) {
+            finalList.add(itineraryAddresses);
+        } else {
+            for (int i = l; i <= r; i++)
+            {
+                itineraryAddresses = swap(itineraryAddresses, l, i);
+                permute(itineraryAddresses, finalList, l+1, r);
+                itineraryAddresses = swap(itineraryAddresses, l, i);
+            }
+        }
+    }
+
+
+
+    public List<Address> swap(List<Address> a, int i, int j)
+    {
+        // swap items at positions i and j
+
+
+        // store address at position i temporarily
+        Address temp;
+        temp = a.get(i);
+
+        a.set(i, a.get(j));
+        a.set(j, temp);
+
+        return a;
+
+    }
+
+
+
+
+
+
 }
-
-
-
-// am i updating myMap correctly? outside of moving the camera , am i doing it right? why wasnt it returning california's coordinates?
