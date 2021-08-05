@@ -40,6 +40,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -62,6 +63,7 @@ public class MapFragment extends Fragment {
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,22 +75,18 @@ public class MapFragment extends Fragment {
                 getChildFragmentManager().findFragmentById(R.id.google_map);
 
 
-
-
-
-
         // Async map
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                // i added this
                 myMap = googleMap;
+
                 // When map is loaded
 
+                // Unwrapping trip object passed over from the TripDetailsActivity
                 Bundle bundleMap = MapFragment.this.getArguments();
                 if (bundleMap != null) {
                     Trip trip = bundleMap.getParcelable("trip");
-                    Log.i(TAG, "Hey im here " + trip.getTripName());
                     geoLocate(trip.getTripName(), false );
                 }
 
@@ -110,59 +108,32 @@ public class MapFragment extends Fragment {
                 btnMakeItinerary.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        Intent i = new Intent(getActivity(), ItineraryFragment.);
-//                        startActivity(i);
-//                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                        fragmentTransaction.replace(R.id.flContainer, new ItineraryFragment(), "NewFragment TAG");
-//                        fragmentTransaction.addToBackStack(null);
-//                        fragmentTransaction.commit();
-                        //makeMatrix(itineraryAddresses);
 
                         Log.i(TAG, String.valueOf(itineraryAddresses));
-                        makeMatrix(itineraryAddresses);
+                        double[][] distancesArray = makeMatrix(itineraryAddresses);
 
-                        List<List<Address>> finalList = new ArrayList<>();
+                        List<List<Integer>> allLocationOrderings = new ArrayList<List<Integer>>();
 
-                        permute(itineraryAddresses, finalList, 0, itineraryAddresses.size()-1);
+                        List<Integer> list = new ArrayList<>();
 
-                        Log.i(TAG, String.valueOf(finalList));
-                        Log.i(TAG, String.valueOf(finalList.size()));
+                        for (int i = 0; i < itineraryAddresses.size(); i++) {
+                            list.add(i);
+                        }
 
+                        permuteInts(list, 0, allLocationOrderings);
+
+                        List<Integer> answer = smallestDistance(allLocationOrderings, distancesArray);
+                        Log.i(TAG, "Shortest path list: " + String.valueOf(answer));
 
                     }
                 });
-
-
-
-//                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                    @Override
-//                    public void onMapClick(LatLng latLng) {
-//                        // When clicked on map
-//                        // Initialize marker options
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        // Set position of marker
-//                        markerOptions.position(latLng);
-//                        // Set title of marker
-//                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-//                        //Remove all marker
-//                        googleMap.clear();
-//                        //Animating to zoom the marker
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-//                                latLng, 10
-//                        ));
-//                        // Add marker on map
-//                        googleMap.addMarker(markerOptions);
-//                    }
-//                });
             }
         });
 
-        //why cant init go here?
         return view;
     }
 
     private void init() {
-
         Log.d(TAG, "init: initializing " + etInputSearch);
         etInputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -181,12 +152,10 @@ public class MapFragment extends Fragment {
                 return false;
             }
         });
-
         hideKeyboard();
     }
 
     private void geoLocate(String searchString, Boolean pinBool) {
-        // i should be passing in a context here... vid passed in MapActivity.this
         Geocoder geocoder = new Geocoder(getActivity());
         List<Address> list = new ArrayList<>();
         try {
@@ -228,40 +197,6 @@ public class MapFragment extends Fragment {
         hideKeyboard();
     }
 
-    private void makeMatrix(List<Address> itineraryAddresses) {
-        // probably did not need to pass in itineraryAddresses as a parameter since I defined it globally
-        int matrixDim = itineraryAddresses.size();
-        Log.i(TAG, String.valueOf(itineraryAddresses.size()));
-
-        double[][] distancesArray = new double[matrixDim][matrixDim];
-
-        for (int i = 0; i < itineraryAddresses.size(); i++) {
-            for (int j = 0; j < itineraryAddresses.size(); j++) {
-                if (i == j) {
-                    distancesArray[i][j] = 0;
-                    Log.i(TAG, String.valueOf(distancesArray[i][j]));
-                } else {
-                    Address address1 = itineraryAddresses.get(i);
-                    Address address2 = itineraryAddresses.get(j);
-
-//                    Log.i(TAG, address1.getAddressLine(0));
-//                    Log.i(TAG, address2.getAddressLine(0));
-
-                    LatLng latLng1 = new LatLng(address1.getLatitude(), address1.getLongitude());
-                    LatLng latLng2 = new LatLng(address2.getLatitude(), address2.getLongitude());
-
-                    double distance = SphericalUtil.computeDistanceBetween(latLng1, latLng2);
-
-
-                    distancesArray[i][j] = distance;
-                    Log.i(TAG, String.valueOf(distancesArray[i][j]));
-
-
-                }
-            }
-        }
-    }
-
     private void hideKeyboard() {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -270,59 +205,87 @@ public class MapFragment extends Fragment {
 
 
 
-//    private void travellingSalesman(List<Address> itineraryAddresses, double[][] distancesArray) {
-//        Node root = new Node(itineraryAddresses.get(0));
-//        int index = 0;
-//        Node workingNode = root;
-//
-//        for (int i = 1; i < itineraryAddresses.size(); i++) {
-//            if (i > index) {
-//                workingNode.addChild(new Node(itineraryAddresses.get(i)));
-//            }
-//
-//
-//        }
-//
-//
-//    }
+    // Each element in allLocationOrderings is a list that represents an ordering of locations. It returns the ordering of locations that requires the least amount of travel (if you travel from the location at the first index to the location at the second index, to the location at the third index, etc).
+    // The distancesArray holds the distances between all locations in our itinerary (more explanation in makeMatrix function)
+    private List<Integer> smallestDistance(List<List<Integer>> allLocationOrderings, double[][] distancesArray) {
+
+        // This will hold the distances for all possible orderings of locations
+        List<Double> distances = new ArrayList<>();
+
+        // Go through each list in our bigList. Determine how long the path is given the ordering of locations specified by this list. Add the distance to our distances list.
+        for (int i = 0; i < allLocationOrderings.size(); i++) {
+            List<Integer> currentPermutation = allLocationOrderings.get(i);
+            double distance = findPathDistance(currentPermutation, distancesArray);
+            distances.add(distance);
+        }
+
+        // We would like the ordering of locations with the smallest total distance
+        double min = Collections.min(distances);
+        Log.i(TAG, "Path with minimum distance has length: " + String.valueOf(min));
+
+        int index = distances.indexOf(min);
+        return allLocationOrderings.get(index);
+    }
+
+    // Takes in an ordering of locations represented by a list of integers. References the distances array to determine how long the path between locations is given the ordering.
+    private double findPathDistance(List<Integer> locationOrder, double[][] distancesArray) {
+        double totalPathDistance = 0;
+        int numLocations = locationOrder.size();
+        for (int i = 1; i < numLocations; i++) {
+            int row = locationOrder.get(i-1);
+            int col = locationOrder.get(i);
+            totalPathDistance = totalPathDistance + distancesArray[row][col];
+        }
+        return totalPathDistance;
+    }
+
+    private double[][] makeMatrix(List<Address> itineraryAddresses) {
+        int matrixDim = itineraryAddresses.size();
+
+        double[][] distancesArray = new double[matrixDim][matrixDim];
+
+        for (int i = 0; i < itineraryAddresses.size(); i++) {
+            for (int j = 0; j < itineraryAddresses.size(); j++) {
+                if (i == j) {
+                    distancesArray[i][j] = 0;
+                } else {
+                    Address address1 = itineraryAddresses.get(i);
+                    Address address2 = itineraryAddresses.get(j);
+
+                    LatLng latLng1 = new LatLng(address1.getLatitude(), address1.getLongitude());
+                    LatLng latLng2 = new LatLng(address2.getLatitude(), address2.getLongitude());
+
+                    double distance = SphericalUtil.computeDistanceBetween(latLng1, latLng2);
 
 
-    private void permute(List<Address> itineraryAddresses, List<List<Address>> finalList, int l, int r)
-    {
-
-        if (l == r) {
-            finalList.add(itineraryAddresses);
-        } else {
-            for (int i = l; i <= r; i++)
-            {
-                itineraryAddresses = swap(itineraryAddresses, l, i);
-                permute(itineraryAddresses, finalList, l+1, r);
-                itineraryAddresses = swap(itineraryAddresses, l, i);
+                    distancesArray[i][j] = distance;
+                }
             }
+        }
+        return distancesArray;
+    }
+
+
+    private void permuteInts(List<Integer> nums, int index, List<List<Integer>> bigList) {
+        if (index == nums.size()) {
+            List l = new ArrayList(nums.size());
+            for (int num : nums)
+                l.add(num);
+            bigList.add(l);
+            return;
+        }
+        for (int i = index; i < nums.size(); i++) {
+            swap(nums, i, index);
+            permuteInts(nums, index + 1, bigList);
+            swap(nums, i, index);
         }
     }
 
-
-
-    public List<Address> swap(List<Address> a, int i, int j)
-    {
-        // swap items at positions i and j
-
-
-        // store address at position i temporarily
-        Address temp;
-        temp = a.get(i);
-
-        a.set(i, a.get(j));
-        a.set(j, temp);
-
-        return a;
+    private void swap(List<Integer> nums, int i, int index) {
+        int temp = nums.get(i);
+        nums.set(i, nums.get(index));
+        nums.set(index, temp);
 
     }
-
-
-
-
-
 
 }
